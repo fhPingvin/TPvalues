@@ -57,6 +57,4 @@ const questions = [
   { text: "Atheism leads to moral decay in society.", axis: "faith", direction: 1 },
   { text: "Atheists can be just as moral as religious people.", axis: "faith", direction: -1 },
 
-  // ... continue until you have 50 per axis (total 200 questions)
-  // For now this is a starter template – duplicate & vary wording to reach 50 each
 ];
