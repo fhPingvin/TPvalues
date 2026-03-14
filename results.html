@@ -148,13 +148,21 @@
       padding: 1.4rem;
       box-shadow: 0 8px 28px rgba(0,0,0,0.4);
       border: 1px solid #e2e8f0;
+      position: relative;
+    }
+
+    .chart-image {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      display: block;
     }
 
     #banner {
       width: 100%;
       height: auto;
       border-radius: 12px;
-      display: block;
+      display: none; /* hidden until canvas ready */
     }
 
     .results-grid {
@@ -495,7 +503,7 @@
         ctx.strokeStyle = dotStroke;
         ctx.stroke();
 
-        // Show only the dotted canvas version
+        // Replace original image with dotted version
         const banner = document.getElementById("banner");
         banner.src = c.toDataURL("image/png");
         banner.style.display = "block";
