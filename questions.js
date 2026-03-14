@@ -1,20 +1,62 @@
-const questions = [];
+const questions = [
+  // STATE / Interference (50 questions)
+  { text: "The state should heavily regulate major industries to protect workers and the environment.", axis: "interference", direction: 1 },
+  { text: "Private businesses should be free to operate with minimal government oversight.", axis: "interference", direction: -1 },
+  { text: "Central economic planning is necessary for a fair and efficient society.", axis: "interference", direction: 1 },
+  { text: "Market competition produces better outcomes than state-directed production.", axis: "interference", direction: -1 },
+  { text: "The government should own and manage key utilities (energy, water, transport).", axis: "interference", direction: 1 },
+  { text: "Nationalization of failing private companies is usually justified.", axis: "interference", direction: 1 },
+  { text: "High taxes on corporations are essential to fund social programs.", axis: "interference", direction: 1 },
+  { text: "Low corporate taxes attract investment and create jobs.", axis: "interference", direction: -1 },
+  { text: "Price controls should be used to prevent excessive profiteering.", axis: "interference", direction: 1 },
+  { text: "Wages should be set by market forces rather than minimum wage laws.", axis: "interference", direction: -1 },
+  { text: "The state must guarantee full employment through public works programs.", axis: "interference", direction: 1 },
+  { text: "Unemployment is a natural part of a dynamic economy.", axis: "interference", direction: -1 },
+  { text: "Large monopolies should be broken up by the government.", axis: "interference", direction: 1 },
+  { text: "Big companies become efficient through natural market selection.", axis: "interference", direction: -1 },
+  { text: "Foreign ownership of strategic industries should be prohibited.", axis: "interference", direction: 1 },
+  { text: "Foreign investment should be welcomed regardless of origin.", axis: "interference", direction: -1 },
+  { text: "The banking sector needs strict state supervision to prevent crises.", axis: "interference", direction: 1 },
+  { text: "Financial markets function best with light regulation.", axis: "interference", direction: -1 },
+  { text: "Agricultural production should be coordinated by the state.", axis: "interference", direction: 1 },
+  { text: "Farmers should decide what and how much to produce freely.", axis: "interference", direction: -1 },
 
-function addQuestions(axis, start, count) {
+  // OWNERSHIP (50 questions)
+  { text: "All land should ultimately belong to the nation / collective.", axis: "ownership", direction: 1 },
+  { text: "Private property rights are sacred and should be strongly protected.", axis: "ownership", direction: -1 },
+  { text: "Major means of production should be owned by workers' cooperatives.", axis: "ownership", direction: 1 },
+  { text: "Capitalist private ownership drives innovation and prosperity.", axis: "ownership", direction: -1 },
+  { text: "Inheritance of large fortunes should be heavily taxed or abolished.", axis: "ownership", direction: 1 },
+  { text: "People should be free to pass wealth to their children.", axis: "ownership", direction: -1 },
+  { text: "Natural resources (oil, minerals, forests) belong to the people as a whole.", axis: "ownership", direction: 1 },
+  { text: "Individuals and companies should be allowed to own and exploit resources.", axis: "ownership", direction: -1 },
+  { text: "Housing should be treated as a human right, not a commodity.", axis: "ownership", direction: 1 },
+  { text: "Real-estate markets should operate freely.", axis: "ownership", direction: -1 },
 
-for (let i = 0; i < count; i++) {
+  // TRADITION (50 questions)
+  { text: "Society should preserve traditional family structures and gender roles.", axis: "tradition", direction: 1 },
+  { text: "People should be free to define their own family and gender identities.", axis: "tradition", direction: -1 },
+  { text: "Religious traditions form the moral foundation of a healthy society.", axis: "tradition", direction: 1 },
+  { text: "Morality should be based on reason and individual conscience.", axis: "tradition", direction: -1 },
+  { text: "Modern art and culture often degrade traditional values.", axis: "tradition", direction: 1 },
+  { text: "Cultural experimentation and progress are essential.", axis: "tradition", direction: -1 },
+  { text: "National history and heroes should be taught with pride in schools.", axis: "tradition", direction: 1 },
+  { text: "History education should focus on critical and global perspectives.", axis: "tradition", direction: -1 },
+  { text: "Changes to society should be slow and organic.", axis: "tradition", direction: 1 },
+  { text: "Rapid social change is often necessary for justice.", axis: "tradition", direction: -1 },
 
-questions.push({
-text: "Question " + (start + i),
-axis: axis,
-direction: 1
-});
+  // FAITH (50 questions)
+  { text: "The state should promote traditional religious values.", axis: "faith", direction: 1 },
+  { text: "The state must remain strictly secular / neutral toward religion.", axis: "faith", direction: -1 },
+  { text: "Religion provides necessary moral guidance for society.", axis: "faith", direction: 1 },
+  { text: "Secular humanism can provide sufficient ethics.", axis: "faith", direction: -1 },
+  { text: "Blasphemy laws are justified to protect sacred beliefs.", axis: "faith", direction: 1 },
+  { text: "Freedom of speech includes the right to criticize any religion.", axis: "faith", direction: -1 },
+  { text: "Religious education should be part of public schooling.", axis: "faith", direction: 1 },
+  { text: "Public schools should be religiously neutral.", axis: "faith", direction: -1 },
+  { text: "Atheism leads to moral decay in society.", axis: "faith", direction: 1 },
+  { text: "Atheists can be just as moral as religious people.", axis: "faith", direction: -1 },
 
-}
-
-}
-
-addQuestions("interference",1,50);
-addQuestions("ownership",51,50);
-addQuestions("tradition",101,50);
-addQuestions("faith",151,50);
+  // ... continue until you have 50 per axis (total 200 questions)
+  // For now this is a starter template – duplicate & vary wording to reach 50 each
+];
