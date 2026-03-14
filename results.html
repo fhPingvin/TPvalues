@@ -21,6 +21,8 @@
       --positive: #4caf50;
       --negative: #ef5350;
       --neutral: #757575;
+      --logo-bg-normal: #f8f9fc;       /* greyish white */
+      --logo-bg-dark: #2d2d2d;         /* between black and white gray */
     }
 
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -146,16 +148,25 @@
       color: #fff;
     }
 
-    .party-logo {
+    .party-logo-container {
       width: 160px;
       height: 160px;
-      border-radius: 16px;
-      object-fit: contain;
       margin: 1.5rem auto;
       border: 3px solid var(--accent);
-      background: #111;
+      border-radius: 16px;
+      overflow: hidden;
       display: block;
     }
+
+    .party-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .normal-bg   { background: var(--logo-bg-normal); }
+    .dark-bg     { background: var(--logo-bg-dark); }
 
     .party-name {
       font-size: 2.1rem;
@@ -218,7 +229,9 @@
 
     <div class="match-section">
       <div class="match-title">Your Closest Ideological Match</div>
-      <img id="matchLogo" src="https://via.placeholder.com/160/333/ccc?text=No+Logo" alt="Ideology Logo" class="party-logo">
+      <div id="logoContainer" class="party-logo-container normal-bg">
+        <img id="matchLogo" src="https://via.placeholder.com/160/333/ccc?text=No+Logo" alt="Ideology Logo" class="party-logo">
+      </div>
       <div id="matchName" class="party-name">Analyzing...</div>
       <div id="matchPercent" class="match-percent"></div>
       <p id="matchDesc" class="party-desc">Your results are being compared...</p>
@@ -282,18 +295,32 @@
       }
     });
 
-    // Calculate percentage (rough heuristic: max theoretical distance ~ 4×(200)^2 = 160000 → sqrt=400)
+    // Calculate percentage
     let percent = 0;
     if (closest) {
-      const maxDist = Math.sqrt(4 * 200 * 200); // worst case: 200 diff per axis
+      const maxDist = Math.sqrt(4 * 200 * 200);
       percent = Math.round(100 - (Math.sqrt(minDistance) / maxDist) * 100);
-      percent = Math.max(0, Math.min(100, percent)); // clamp
+      percent = Math.max(0, Math.min(100, percent));
     }
 
-    // Display
+    // Display result
     if (closest) {
-      document.getElementById("matchLogo").src = closest.img || "https://via.placeholder.com/160/333/ccc?text=No+Logo";
-      document.getElementById("matchLogo").alt = closest.name + " logo";
+      const logoEl = document.getElementById("matchLogo");
+      const container = document.getElementById("logoContainer");
+
+      logoEl.src = closest.img || "https://via.placeholder.com/160/333/ccc?text=No+Logo";
+      logoEl.alt = closest.name + " logo";
+
+      // Special dark background for these four
+      const special = ["Iron Guard", "National Synarchist Union", "National Radical Camp", "Sansepolcrismo"];
+      if (special.includes(closest.name)) {
+        container.classList.remove("normal-bg");
+        container.classList.add("dark-bg");
+      } else {
+        container.classList.remove("dark-bg");
+        container.classList.add("normal-bg");
+      }
+
       document.getElementById("matchName").textContent = closest.name;
       document.getElementById("matchPercent").textContent = `${percent}% compatibility`;
       document.getElementById("matchDesc").textContent = closest.description;
