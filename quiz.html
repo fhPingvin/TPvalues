@@ -39,97 +39,104 @@
     }
 
     .quiz-container {
-      max-width: 700px;
+      max-width: 720px;
       width: 100%;
       text-align: center;
     }
 
+    .question-header {
+      margin-bottom: 1.8rem;
+    }
+
+    .question-number {
+      font-size: 1.1rem;
+      color: #94a3b8;
+      margin-bottom: 0.6rem;
+    }
+
     h2#questionText {
-      font-size: 1.9rem;
+      font-size: 1.95rem;
       font-weight: 600;
-      margin-bottom: 3rem;
-      line-height: 1.4;
+      line-height: 1.38;
+      margin-bottom: 3.2rem;
       color: #e0e7ff;
     }
 
     #answers {
       display: flex;
       flex-direction: column;
-      gap: 1.1rem;
-      margin: 0 auto 2.5rem;
-      max-width: 480px;
+      gap: 1.2rem;
+      margin: 0 auto 2.8rem;
+      max-width: 520px;
     }
 
     .answer-btn {
       font-family: 'Lexend', sans-serif;
-      font-size: 1.35rem;
+      font-size: 1.38rem;
       font-weight: 600;
       color: white;
-      padding: 1.1rem 2rem;
+      padding: 1.15rem 2.4rem;
       border: none;
-      border-radius: 12px;
+      border-radius: 14px;
       cursor: pointer;
-      transition: all 0.22s ease;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.4);
-      letter-spacing: 0.4px;
+      transition: all 0.24s ease;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.42);
+      letter-spacing: 0.3px;
     }
 
     .answer-btn:hover {
       transform: translateY(-3px);
-      box-shadow: 0 10px 28px rgba(0,0,0,0.55);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.58);
     }
 
     .answer-btn:active {
       transform: translateY(0);
     }
 
-    /* Colors matching your screenshot */
-    #btn-strong-agree   { background: #2e7d32; } /* dark green   */
-    #btn-agree          { background: #4caf50; } /* green        */
-    #btn-neutral        { background: #757575; } /* gray         */
-    #btn-disagree       { background: #ef5350; } /* soft red     */
-    #btn-strong-disagree{ background: #d32f2f; } /* dark red     */
+    #btn-strong-agree   { background: #2e7d32; }
+    #btn-agree          { background: #4caf50; }
+    #btn-neutral        { background: #757575; }
+    #btn-disagree       { background: #ef5350; }
+    #btn-strong-disagree{ background: #d32f2f; }
 
     #btn-back {
-      font-size: 1.15rem;
+      font-size: 1.18rem;
       font-weight: 500;
       color: #cbd5e1;
       background: transparent;
-      border: 1px solid #444;
-      padding: 0.9rem 2.2rem;
+      border: 1px solid #555;
+      padding: 0.95rem 2.4rem;
       border-radius: 999px;
-      margin-top: 1.5rem;
+      margin-top: 1rem;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.22s ease;
     }
 
     #btn-back:hover {
-      background: rgba(255,255,255,0.08);
-      border-color: #666;
+      background: rgba(255,255,255,0.07);
+      border-color: #777;
+    }
+
+    #btn-back:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
     }
 
     #progress {
       font-size: 1.05rem;
       color: #94a3b8;
-      margin-top: 1.5rem;
-      opacity: 0.9;
-    }
-
-    @media (max-width: 600px) {
-      h2#questionText {
-        font-size: 1.65rem;
-      }
-      .answer-btn {
-        font-size: 1.2rem;
-        padding: 1rem 1.6rem;
-      }
+      margin-top: 2rem;
+      opacity: 0.85;
     }
   </style>
 </head>
 <body>
 
   <div class="quiz-container">
-    <h2 id="questionText"></h2>
+    <div class="question-header">
+      <div class="question-number" id="questionNumber"></div>
+      <h2 id="questionText"></h2>
+    </div>
 
     <div id="answers">
       <button id="btn-strong-agree"   class="answer-btn" onclick="answer(1)">Strongly Agree</button>
@@ -139,13 +146,80 @@
       <button id="btn-strong-disagree"class="answer-btn" onclick="answer(-1)">Strongly Disagree</button>
     </div>
 
-    <button id="btn-back" onclick="history.back()">Back</button>
-
-    <p id="progress"></p>
+    <button id="btn-back" onclick="goBack()">Back</button>
   </div>
 
   <script src="questions.js"></script>
-  <script src="quiz.js"></script>
+  <script>
+    let currentQuestion = 0;
+    let scores = {
+      interference: 0,
+      ownership: 0,
+      tradition: 0,
+      faith: 0
+    };
+    let answersHistory = [];
+
+    function showQuestion() {
+      if (currentQuestion >= questions.length) {
+        localStorage.setItem("scores", JSON.stringify(scores));
+        window.location.href = "results.html";
+        return;
+      }
+
+      let q = questions[currentQuestion];
+      document.getElementById("questionNumber").innerText = `Question ${currentQuestion + 1} of ${questions.length}`;
+      document.getElementById("questionText").innerText = q.text;
+
+      document.getElementById("btn-back").disabled = (currentQuestion === 0);
+
+      let prev = answersHistory[currentQuestion];
+      if (prev !== undefined) {
+        highlightSelected(prev);
+      } else {
+        clearHighlight();
+      }
+    }
+
+    function highlightSelected(value) {
+      clearHighlight();
+      let btnId;
+      if (value === 1)    btnId = "btn-strong-agree";
+      else if (value === 0.5)  btnId = "btn-agree";
+      else if (value === 0)    btnId = "btn-neutral";
+      else if (value === -0.5) btnId = "btn-disagree";
+      else if (value === -1)   btnId = "btn-strong-disagree";
+
+      if (btnId) {
+        document.getElementById(btnId).style.boxShadow = "0 0 0 4px rgba(255, 255, 255, 0.25)";
+      }
+    }
+
+    function clearHighlight() {
+      document.querySelectorAll(".answer-btn").forEach(btn => {
+        btn.style.boxShadow = "0 6px 20px rgba(0,0,0,0.42)";
+      });
+    }
+
+    function answer(value) {
+      let q = questions[currentQuestion];
+
+      answersHistory[currentQuestion] = value;
+      scores[q.axis] += value * q.direction;
+
+      currentQuestion++;
+      showQuestion();
+    }
+
+    function goBack() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        showQuestion();
+      }
+    }
+
+    showQuestion();
+  </script>
 
 </body>
 </html>
