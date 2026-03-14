@@ -148,51 +148,19 @@
       padding: 1.4rem;
       box-shadow: 0 8px 28px rgba(0,0,0,0.4);
       border: 1px solid #e2e8f0;
-      position: relative;
-      display: inline-block;
     }
 
-    .chart-container img {
+    #banner {
       width: 100%;
       height: auto;
       border-radius: 12px;
       display: block;
     }
 
-    .compass-dot {
-      position: absolute;
-      width: 22px;
-      height: 22px;
-      background: #ff8533;
-      border: 4px solid white;
-      border-radius: 50%;
-      box-shadow: 0 0 15px rgba(255,133,51,0.9);
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-
-    .trad-dot {
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      background: #4caf50;
-      border: 3px solid white;
-      border-radius: 50%;
-      box-shadow: 0 0 10px rgba(76,175,80,0.8);
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-
-    .faith-dot {
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      background: #ef5350;
-      border: 3px solid white;
-      border-radius: 50%;
-      box-shadow: 0 0 10px rgba(239,83,80,0.8);
-      transform: translate(-50%, -50%);
-      pointer-events: none;
+    .hint {
+      font-size: 1.05rem;
+      color: #94a3b8;
+      margin: 0.5rem 0 2rem;
     }
 
     .results-grid {
@@ -271,16 +239,8 @@
     </div>
 
     <div class="chart-container">
-      <img src="tpchart.png" alt="TP Values Compass Chart">
-
-      <!-- Main compass dot (State Interference + Ownership) -->
-      <div id="mainDot" class="compass-dot"></div>
-
-      <!-- Tradition bar dot -->
-      <div id="traditionDot" class="trad-dot"></div>
-
-      <!-- Faith bar dot -->
-      <div id="faithDot" class="faith-dot"></div>
+      <img id="banner" src="" alt="Your Position on TP Values Chart">
+      <p class="hint">Hint: right-click the chart and "Save image as" to download with your dot!</p>
     </div>
 
     <div class="results-grid" id="resultsGrid"></div>
@@ -293,9 +253,7 @@
   <script>
     // Load user scores
     const saved = localStorage.getItem("scores");
-    if (!saved) {
-      window.location.href = "index.html";
-    }
+    if (!saved) window.location.href = "index.html";
     const userScores = JSON.parse(saved);
 
     // Show axis results
@@ -310,19 +268,15 @@
     Object.entries(userScores).forEach(([key, value]) => {
       const card = document.createElement("div");
       card.className = "axis-card";
-
       const name = document.createElement("div");
       name.className = "axis-name";
       name.textContent = axisDisplay[key] || key;
-
       const scoreEl = document.createElement("div");
       scoreEl.className = "axis-score";
       scoreEl.textContent = value >= 0 ? `+${value}` : value;
-
       if (value > 15) scoreEl.classList.add("positive");
       if (value < -15) scoreEl.classList.add("negative");
       if (Math.abs(value) <= 15) scoreEl.classList.add("neutral");
-
       card.append(name, scoreEl);
       grid.appendChild(card);
     });
@@ -330,7 +284,6 @@
     // Find closest match
     let closest = null;
     let minDistance = Infinity;
-
     ideologies.forEach(ideology => {
       let dist = 0;
       Object.keys(userScores).forEach(axis => {
@@ -343,7 +296,6 @@
       }
     });
 
-    // Calculate percentage
     let percent = 0;
     if (closest) {
       const maxDist = Math.sqrt(4 * 200 * 200);
@@ -351,14 +303,10 @@
       percent = Math.max(0, Math.min(100, percent));
     }
 
-    // Display closest match
     if (closest) {
       const logoEl = document.getElementById("matchLogo");
       const container = document.getElementById("logoContainer");
-
       logoEl.src = closest.img || "https://via.placeholder.com/160/333/ccc?text=No+Logo";
-      logoEl.alt = closest.name + " logo";
-
       const special = ["Iron Guard", "National Synarchist Union", "National Radical Camp", "Sansepolcrismo"];
       if (special.includes(closest.name)) {
         container.classList.remove("normal-bg");
@@ -367,47 +315,83 @@
         container.classList.remove("dark-bg");
         container.classList.add("normal-bg");
       }
-
       document.getElementById("matchName").textContent = closest.name;
       document.getElementById("matchPercent").textContent = `${percent}% compatibility`;
       document.getElementById("matchDesc").textContent = closest.description;
-    } else {
-      document.getElementById("matchName").textContent = "No match found";
-      document.getElementById("matchPercent").textContent = "";
-      document.getElementById("matchDesc").textContent = "There was an issue matching your profile.";
     }
 
-    // ==================== DOT POSITIONING ON YOUR CHART ====================
-    // Calibrated to your PNG: main square center ≈ (380, 280), half-size ≈ 340 px
-    // Tradition bar center X ≈ 700 px, Faith bar center X ≈ 760 px
-    // Vertical bars half-height ≈ 240 px (from top = +100 to bottom = -100)
+    // ==================== CANVAS DOT ON CHART ====================
+    window.onload = function() {
+      const background = new Image();
+      background.crossOrigin = "anonymous"; // Needed for canvas
+      background.onload = function() {
+        const c = document.createElement("canvas");
+        c.width = background.width;
+        c.height = background.height;
+        const ctx = c.getContext("2d");
 
-    const stateScore = userScores.interference || 0;   // X: left=-100 → right=+100
-    const ownerScore = userScores.ownership || 0;      // Y: bottom=-100 → top=+100
-    const tradScore  = userScores.tradition || 0;
-    const faithScore = userScores.faith || 0;
+        // Draw background chart
+        ctx.drawImage(background, 0, 0);
 
-    // Main compass dot
-    const mainDot = document.getElementById("mainDot");
-    const mainX = 380 + (stateScore / 100) * 340;      // center 380, half 340
-    const mainY = 280 - (ownerScore / 100) * 340;      // Y inverted (top = positive)
-    mainDot.style.left = mainX + "px";
-    mainDot.style.top  = mainY + "px";
-    mainDot.style.display = "block";
+        // User scores
+        const state = userScores.interference || 0;   // X: -100 left → +100 right
+        const owner = userScores.ownership || 0;      // Y: -100 bottom → +100 top
+        const trad  = userScores.tradition || 0;
+        const faith = userScores.faith || 0;
 
-    // Tradition bar dot (orange bar)
-    const traditionDot = document.getElementById("traditionDot");
-    const tradY = 280 - (tradScore / 100) * 240;       // center Y 280, half-height 240
-    traditionDot.style.left = "700px";
-    traditionDot.style.top  = tradY + "px";
-    traditionDot.style.display = "block";
+        // === Main square dot (center = 0,0 in chart space) ===
+        const cx = 380;          // center X (measure your image)
+        const cy = 280;          // center Y
+        const half = 340;        // half-size of square
 
-    // Faith bar dot (green bar)
-    const faithDot = document.getElementById("faithDot");
-    const faithY = 280 - (faithScore / 100) * 240;
-    faithDot.style.left = "760px";
-    faithDot.style.top  = faithY + "px";
-    faithDot.style.display = "block";
+        const dotX = cx + (state / 100) * half;
+        const dotY = cy - (owner / 100) * half;   // Y inverted
+
+        ctx.beginPath();
+        ctx.arc(dotX, dotY, 22, 0, 2 * Math.PI);
+        ctx.fillStyle = "#ff8533";
+        ctx.fill();
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "white";
+        ctx.stroke();
+
+        // === Tradition bar dot ===
+        const tradX = 700;       // X position of orange bar center
+        const tradHalf = 220;    // half-height of bar
+        const tradYPos = cy - (trad / 100) * tradHalf;
+
+        ctx.beginPath();
+        ctx.arc(tradX, tradYPos, 18, 0, 2 * Math.PI);
+        ctx.fillStyle = "#4caf50";
+        ctx.fill();
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "white";
+        ctx.stroke();
+
+        // === Faith bar dot ===
+        const faithX = 760;      // X position of green bar center
+        const faithYPos = cy - (faith / 100) * tradHalf;
+
+        ctx.beginPath();
+        ctx.arc(faithX, faithYPos, 18, 0, 2 * Math.PI);
+        ctx.fillStyle = "#ef5350";
+        ctx.fill();
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "white";
+        ctx.stroke();
+
+        // Optional: add text labels
+        ctx.font = "bold 28px Lexend, sans-serif";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.fillText("Your Position", cx, cy - 340 - 40);
+
+        // Set the image src to the canvas output
+        document.getElementById("banner").src = c.toDataURL("image/png");
+      };
+
+      background.src = "tpchart.png";
+    };
   </script>
 
 </body>
