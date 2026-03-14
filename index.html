@@ -13,8 +13,30 @@
 <hr>
 
 <br>
-<button class="button" onclick="location.href='quiz.html';" style="font-size:36pt;">Click here to start!</button>
-<br><hr>
+<div style="display: grid; place-items: center; min-height: 80vh;">
+  <button 
+    onclick="location.href='quiz.html';" 
+    style="
+      font-family: 'Lexend', sans-serif;
+      font-size: 36pt;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(to right, #ff6b6b, #ff8e53);
+      padding: 1rem 3.5rem;
+      border: none;
+      border-radius: 999px;
+      box-shadow: 0 10px 30px rgba(255,107,107,0.4);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    "
+    onmouseover="this.style.transform='scale(1.06)'; this.style.boxShadow='0 15px 40px rgba(255,107,107,0.55)'"
+    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 10px 30px rgba(255,107,107,0.4)'"
+  >
+    Click here to start!
+  </button>
+</div>
+<hr>
+    
 <h2>What is Third Position Values?</h2>
     <p>Third Position Values is a test that attempts to guess and specify your ideology in the broad term of Third Position. You will be presented by a statement, and then you will answer with your opinion on the statement, from <b>Strongly Agree</b> to <b>Strongly Disagree</b>, with each answer slightly affecting your scores. At the end of the quiz, your answers will be compared to the maximum possible for each value, thus giving you a percentage. Answer honestly!<br /><br />
     There are <b><u><span id="numOfQuestions"></span></u></b> questions in the test.</p>
