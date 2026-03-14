@@ -320,17 +320,17 @@
       document.getElementById("matchDesc").textContent = closest.description;
     }
 
-    // ==================== CANVAS DOT ON CHART ====================
+    // ==================== CANVAS DOT DRAWING ====================
     window.onload = function() {
       const background = new Image();
-      background.crossOrigin = "anonymous"; // Needed for canvas
+      background.crossOrigin = "anonymous";
       background.onload = function() {
         const c = document.createElement("canvas");
         c.width = background.width;
         c.height = background.height;
         const ctx = c.getContext("2d");
 
-        // Draw background chart
+        // Draw the base chart
         ctx.drawImage(background, 0, 0);
 
         // User scores
@@ -339,54 +339,58 @@
         const trad  = userScores.tradition || 0;
         const faith = userScores.faith || 0;
 
-        // === Main square dot (center = 0,0 in chart space) ===
-        const cx = 380;          // center X (measure your image)
-        const cy = 280;          // center Y
-        const half = 340;        // half-size of square
+        // === Main square dot ===
+        // Center: (600, 600)
+        // Range: X 80 to 1120 → width 1040 → half 520
+        // Y 1120 to 80 → height 1040 → half 520 (Y inverted)
+        const cx = 600;
+        const cy = 600;
+        const half = 520;
 
         const dotX = cx + (state / 100) * half;
-        const dotY = cy - (owner / 100) * half;   // Y inverted
+        const dotY = cy - (owner / 100) * half;   // invert Y
 
         ctx.beginPath();
-        ctx.arc(dotX, dotY, 22, 0, 2 * Math.PI);
+        ctx.arc(dotX, dotY, 25, 0, 2 * Math.PI);
         ctx.fillStyle = "#ff8533";
         ctx.fill();
         ctx.lineWidth = 4;
         ctx.strokeStyle = "white";
         ctx.stroke();
 
-        // === Tradition bar dot ===
-        const tradX = 700;       // X position of orange bar center
-        const tradHalf = 220;    // half-height of bar
-        const tradYPos = cy - (trad / 100) * tradHalf;
+        // === Tradition vertical dot ===
+        // Center X: 1315, Y: 600
+        // Y range same: 1120 bottom (-100) → 80 top (+100)
+        const tradX = 1315;
+        const tradYPos = 600 - (trad / 100) * half;   // same half-height
 
         ctx.beginPath();
-        ctx.arc(tradX, tradYPos, 18, 0, 2 * Math.PI);
+        ctx.arc(tradX, tradYPos, 20, 0, 2 * Math.PI);
         ctx.fillStyle = "#4caf50";
         ctx.fill();
         ctx.lineWidth = 3;
         ctx.strokeStyle = "white";
         ctx.stroke();
 
-        // === Faith bar dot ===
-        const faithX = 760;      // X position of green bar center
-        const faithYPos = cy - (faith / 100) * tradHalf;
+        // === Faith vertical dot ===
+        const faithX = 1515;
+        const faithYPos = 600 - (faith / 100) * half;
 
         ctx.beginPath();
-        ctx.arc(faithX, faithYPos, 18, 0, 2 * Math.PI);
+        ctx.arc(faithX, faithYPos, 20, 0, 2 * Math.PI);
         ctx.fillStyle = "#ef5350";
         ctx.fill();
         ctx.lineWidth = 3;
         ctx.strokeStyle = "white";
         ctx.stroke();
 
-        // Optional: add text labels
-        ctx.font = "bold 28px Lexend, sans-serif";
+        // Optional label
+        ctx.font = "bold 30px Lexend, sans-serif";
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
-        ctx.fillText("Your Position", cx, cy - 340 - 40);
+        ctx.fillText("Your Position", cx, cy - half - 40);
 
-        // Set the image src to the canvas output
+        // Output to img
         document.getElementById("banner").src = c.toDataURL("image/png");
       };
 
