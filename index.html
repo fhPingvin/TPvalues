@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TP Values — Third Position Ideology Test</title>
   
-  <link rel="icon" type="image/x-icon" href="icon.png"/>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,6 +34,26 @@
       color: var(--text);
       line-height: 1.6;
       min-height: 100vh;
+    }
+
+    .logo-fixed {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 80px;
+      height: 80px;
+      z-index: 1000;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      transition: all 0.3s ease;
+    }
+
+    .logo-fixed img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .container {
@@ -184,10 +204,20 @@
       .axes-grid { grid-template-columns: 1fr; }
       .chart-section { padding: 1rem; margin: 1.5rem auto 3rem; }
       .chart-section img { max-width: 90%; }
+      .logo-fixed {
+        width: 64px;
+        height: 64px;
+        top: 16px;
+        left: 16px;
+      }
     }
   </style>
 </head>
 <body>
+
+  <div class="logo-fixed">
+    <img src="tplogo.png" alt="TP Values Logo">
+  </div>
 
   <a href="https://tpvalues.github.io/TPvalues/" class="github-corner" aria-label="View source on GitHub">
     <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
