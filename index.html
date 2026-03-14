@@ -13,24 +13,25 @@
 <hr>
 
 <br>
-<div style="display: grid; place-items: center; min-height: 80vh;">
-  <button 
-    onclick="location.href='quiz.html';" 
+<div style="display: flex; justify-content: center; align-items: center; padding: 4rem 1rem;">
+  <button
+    onclick="location.href='quiz.html';"
     style="
-      font-family: 'Lexend', sans-serif;
-      font-size: 36pt;
+      font-family: 'Lexend', system-ui, sans-serif;
+      font-size: 1.8rem;          /* smaller than 36pt — feels more natural/minimal */
       font-weight: 600;
       color: white;
       background: linear-gradient(to right, #ff6b6b, #ff8e53);
-      padding: 1rem 3.5rem;
+      padding: 0.9rem 2.8rem;     /* tighter padding */
       border: none;
       border-radius: 999px;
-      box-shadow: 0 10px 30px rgba(255,107,107,0.4);
+      box-shadow: 0 6px 20px rgba(255,107,107,0.35);  /* softer shadow */
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: all 0.22s ease;
+      letter-spacing: 0.5px;
     "
-    onmouseover="this.style.transform='scale(1.06)'; this.style.boxShadow='0 15px 40px rgba(255,107,107,0.55)'"
-    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 10px 30px rgba(255,107,107,0.4)'"
+    onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 30px rgba(255,107,107,0.5)'"
+    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 20px rgba(255,107,107,0.35)'"
   >
     Click here to start!
   </button>
