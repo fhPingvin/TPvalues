@@ -218,85 +218,86 @@
       box-shadow: 0 14px 36px rgba(255,133,51,0.5);
     }
 
-    /* Compact next matches */
-    .next-matches {
-      margin: 4rem auto;
-      max-width: 680px;
-      background: rgba(30, 41, 59, 0.6);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1.5rem;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    }
+/* Compact next matches */
+.next-matches {
+  margin: 4rem auto;
+  max-width: 680px;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
 
-    .next-title {
-      font-size: 1.6rem;
-      font-weight: 600;
-      color: #94a3b8;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
+.next-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-bottom: 1rem;
+  text-align: center;
+}
 
-    .next-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-    }
+.next-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
 
-    .next-item {
-      background: rgba(30, 41, 59, 0.8);
-      border: 1px solid #444;
-      border-radius: 12px;
-      padding: 1rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
+.next-item {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid #444;
+  border-radius: 12px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: flex-start; /* changed from center to top-align for long texts */
+  gap: 1rem;
+}
 
-    .next-item:hover {
-      background: rgba(50, 65, 90, 0.8);
-      border-color: var(--accent);
-    }
+.next-item:hover {
+  background: rgba(50, 65, 90, 0.8);
+  border-color: var(--accent);
+}
 
-    .next-logo {
-      width: 48px;
-      height: 48px;
-      border-radius: 10px;
-      object-fit: contain;
-      background: var(--logo-bg-normal);
-      flex-shrink: 0;
-    }
+.next-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  object-fit: contain;
+  background: var(--logo-bg-normal);
+  flex-shrink: 0;
+}
 
-    .next-info {
-      flex: 1;
-    }
+.next-info {
+  flex: 1;
+}
 
-    .next-name {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #cbd5e1;
-    }
+.next-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #cbd5e1;
+}
 
-    .next-percent {
-      font-size: 1rem;
-      color: #94a3b8;
-    }
+.next-percent {
+  font-size: 1rem;
+  color: #94a3b8;
+}
 
-    .next-desc {
-      font-size: 0.95rem;
-      color: #94a3b8;
-      line-height: 1.4;
-      margin-top: 0.6rem;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-    }
+.next-desc {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin-top: 0.8rem;
+  max-height: 0;               /* collapsed by default */
+  overflow: hidden;
+  transition: max-height 0.4s ease, margin-top 0.4s ease;
+}
 
-    .next-item.expanded .next-desc {
-      max-height: 200px;
-    }
+.next-item.expanded .next-desc {
+  max-height: 1000px;          /* very large value so it can expand fully */
+  margin-top: 0.8rem;
+}
   </style>
 </head>
 <body>
