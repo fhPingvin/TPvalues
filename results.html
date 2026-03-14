@@ -12,7 +12,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* (keep your existing CSS here – same as before) */
     :root {
       --bg: #0f121a;
       --text: #e0e7ff;
@@ -228,7 +227,6 @@
     <a href="index.html" class="restart-btn">Take the Test Again</a>
   </div>
 
-  <!-- Load ideologies data -->
   <script src="ideologies.js"></script>
 
   <script>
@@ -294,7 +292,7 @@
 
     // Display
     if (closest) {
-      document.getElementById("matchLogo").src = closest.logo || "https://via.placeholder.com/160/333/ccc?text=No+Logo";
+      document.getElementById("matchLogo").src = closest.img || "https://via.placeholder.com/160/333/ccc?text=No+Logo";
       document.getElementById("matchLogo").alt = closest.name + " logo";
       document.getElementById("matchName").textContent = closest.name;
       document.getElementById("matchPercent").textContent = `${percent}% compatibility`;
