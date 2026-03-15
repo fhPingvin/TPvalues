@@ -359,9 +359,9 @@
       const scoreEl = document.createElement("div");
       scoreEl.className = "axis-score";
       scoreEl.textContent = value >= 0 ? `+${value}` : value;
-      if (value > 15) scoreEl.classList.add("positive");
-      if (value < -15) scoreEl.classList.add("negative");
-      if (Math.abs(value) <= 15) scoreEl.classList.add("neutral");
+      if (value > 7.5) scoreEl.classList.add("positive");
+      if (value < -7.5) scoreEl.classList.add("negative");
+      if (Math.abs(value) <= 7.5) scoreEl.classList.add("neutral");
       card.append(name, scoreEl);
       grid.appendChild(card);
     });
