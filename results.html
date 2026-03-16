@@ -148,21 +148,13 @@
       padding: 1.4rem;
       box-shadow: 0 8px 28px rgba(0,0,0,0.4);
       border: 1px solid #e2e8f0;
-      position: relative;
-    }
-
-    .chart-image {
-      width: 100%;
-      height: auto;
-      border-radius: 12px;
-      display: block;
     }
 
     #banner {
       width: 100%;
       height: auto;
       border-radius: 12px;
-      display: none;
+      display: block;
     }
 
     .results-grid {
@@ -218,85 +210,107 @@
       box-shadow: 0 14px 36px rgba(255,133,51,0.5);
     }
 
-.next-matches {
-  margin: 4rem auto;
-  max-width: 680px;
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-}
+    /* Audio controls */
+    #audioControls {
+      margin: 1.5rem auto;
+      text-align: center;
+    }
 
-.next-title {
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: #94a3b8;
-  margin-bottom: 1rem;
-  text-align: center;
-}
+    #muteBtn {
+      padding: 0.8rem 1.6rem;
+      font-size: 1.1rem;
+      background: #444;
+      color: white;
+      border: 1px solid #666;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
 
-.next-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
+    #muteBtn:hover {
+      background: #555;
+    }
 
-.next-item {
-  background: rgba(30, 41, 59, 0.8);
-  border: 1px solid #444;
-  border-radius: 12px;
-  padding: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-}
+    /* Compact next matches */
+    .next-matches {
+      margin: 4rem auto;
+      max-width: 680px;
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
 
-.next-item:hover {
-  background: rgba(50, 65, 90, 0.8);
-  border-color: var(--accent);
-}
+    .next-title {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
 
-.next-logo {
-  width: 48px;
-  height: 48px;
-  border-radius: 10px;
-  object-fit: contain;
-  background: var(--logo-bg-normal);
-  flex-shrink: 0;
-}
+    .next-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
 
-.next-info {
-  flex: 1;
-}
+    .next-item {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid #444;
+      border-radius: 12px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
 
-.next-name {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #cbd5e1;
-}
+    .next-item:hover {
+      background: rgba(50, 65, 90, 0.8);
+      border-color: var(--accent);
+    }
 
-.next-percent {
-  font-size: 1rem;
-  color: #94a3b8;
-}
+    .next-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      object-fit: contain;
+      background: var(--logo-bg-normal);
+      flex-shrink: 0;
+    }
 
-.next-desc {
-  font-size: 0.95rem;
-  color: #94a3b8;
-  line-height: 1.5;
-  margin-top: 0.8rem;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease, margin-top 0.4s ease;
-}
+    .next-info {
+      flex: 1;
+    }
 
-.next-item.expanded .next-desc {
-  max-height: 1000px;
-  margin-top: 0.8rem;
-}
+    .next-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+
+    .next-percent {
+      font-size: 1rem;
+      color: #94a3b8;
+    }
+
+    .next-desc {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      line-height: 1.5;
+      margin-top: 0.8rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease, margin-top 0.5s ease;
+    }
+
+    .next-item.expanded .next-desc {
+      max-height: 2000px;
+      margin-top: 0.8rem;
+    }
   </style>
 </head>
 <body>
@@ -324,6 +338,14 @@
       <img id="banner" src="" alt="Your Position on TP Values Chart">
     </div>
 
+    <!-- Audio controls -->
+    <audio id="introAudio" preload="auto" loop="false"></audio>
+    <div id="audioControls" style="display: none; margin: 1.5rem auto; text-align: center;">
+      <button id="muteBtn">
+        🔊 Playing Intro – Mute
+      </button>
+    </div>
+
     <div class="results-grid" id="resultsGrid"></div>
 
     <div class="next-matches">
@@ -337,13 +359,14 @@
   <script src="ideologies.js"></script>
 
   <script>
-   
+    // Load user scores
     const saved = localStorage.getItem("scores");
     if (!saved) window.location.href = "index.html";
     const userScores = JSON.parse(saved);
 
+    // Show axis results
     const axisDisplay = {
-      interference: "More / Less State Interference",
+      interference: "Less / More State Interference",
       ownership: "Collective / Private Ownership",
       tradition: "Tradition / Future",
       faith: "Faith / Secularism"
@@ -359,13 +382,14 @@
       const scoreEl = document.createElement("div");
       scoreEl.className = "axis-score";
       scoreEl.textContent = value >= 0 ? `+${value}` : value;
-      if (value > 7.5) scoreEl.classList.add("positive");
-      if (value < -7.5) scoreEl.classList.add("negative");
-      if (Math.abs(value) <= 7.5) scoreEl.classList.add("neutral");
+      if (value > 15) scoreEl.classList.add("positive");
+      if (value < -15) scoreEl.classList.add("negative");
+      if (Math.abs(value) <= 15) scoreEl.classList.add("neutral");
       card.append(name, scoreEl);
       grid.appendChild(card);
     });
 
+    // Find all matches sorted by distance
     const matches = [];
     ideologies.forEach(ideology => {
       let dist = 0;
@@ -379,8 +403,9 @@
 
     matches.sort((a, b) => a.dist - b.dist);
 
-    const maxDist = Math.sqrt(4 * 100 * 100);
+    const maxDist = Math.sqrt(4 * 200 * 200);
 
+    // Top match
     const closest = matches[0]?.ideology;
     if (closest) {
       const logoEl = document.getElementById("matchLogo");
@@ -400,6 +425,7 @@
       document.getElementById("matchDesc").textContent = closest.description;
     }
 
+    // Next 3 matches (compact, auto-expanding)
     const nextList = document.getElementById("nextList");
     for (let i = 1; i <= 3 && i < matches.length; i++) {
       const { ideology, dist } = matches[i];
@@ -436,6 +462,7 @@
       nextList.appendChild(item);
     }
 
+    // ==================== CANVAS DOT DRAWING (black dots) ====================
     window.onload = function() {
       const background = new Image();
       background.crossOrigin = "anonymous";
@@ -453,14 +480,14 @@
         const faith = userScores.faith || 0;
 
         const dotColor = "#000000";
-        const dotStroke = "#000000";
+        const dotStroke = "#ffffff";
         const dotStrokeWidth = 4;
 
         const cx = 600;
         const cy = 600;
         const half = 520;
-        const dotX = cx + (state / 50) * half;
-        const dotY = cy - (owner / 50) * half;
+        const dotX = cx + (state / 100) * half;
+        const dotY = cy - (owner / 100) * half;
 
         ctx.beginPath();
         ctx.arc(dotX, dotY, 25, 0, 2 * Math.PI);
@@ -470,8 +497,8 @@
         ctx.strokeStyle = dotStroke;
         ctx.stroke();
 
-        const tradX = 1318;
-        const tradYPos = 600 - (trad / 50) * half;
+        const tradX = 1315;
+        const tradYPos = 600 - (trad / 100) * half;
 
         ctx.beginPath();
         ctx.arc(tradX, tradYPos, 20, 0, 2 * Math.PI);
@@ -481,8 +508,8 @@
         ctx.strokeStyle = dotStroke;
         ctx.stroke();
 
-        const faithX = 1518;
-        const faithYPos = 600 - (faith / 50) * half;
+        const faithX = 1515;
+        const faithYPos = 600 - (faith / 100) * half;
 
         ctx.beginPath();
         ctx.arc(faithX, faithYPos, 20, 0, 2 * Math.PI);
@@ -494,11 +521,57 @@
 
         const banner = document.getElementById("banner");
         banner.src = c.toDataURL("image/png");
-        banner.style.display = "block";
       };
 
       background.src = "tpchart.png";
     };
+
+    // ==================== MUSIC INTRO FEATURE ====================
+    if (closest) {
+      // Map ideology name → MP3 file (add your filenames here)
+      const audioMap = {
+        "Ailtirí na hAiséirghe": "/audio/ailtiri-na-haiseirghe.mp3",
+        "All-Russian Fascist Party": "/audio/all-russian-fascist-party.mp3",
+        "Ba'ath Party": "/audio/baath-party.mp3",
+        "Balli Kombëtar": "/audio/balli-kombetar.mp3",
+        "Bowdenism": "/audio/bowdenism.mp3",
+        "Brazilian Integralist Party": "/audio/brazilian-integralist-party.mp3",
+        "Brazilian Labour Party": "/audio/brazilian-labour-party.mp3",
+        "Breton National Party": "/audio/breton-national-party.mp3",
+        "British Union of Fascists": "/audio/british-union-of-fascists.mp3",
+        "Crusade of Romanianism": "/audio/crusade-of-romanianism.mp3",
+        // ... add all your other parties here
+        // Example: "Yellow Socialism": "/audio/yellow-socialism.mp3",
+      };
+
+      const audioSrc = audioMap[closest.name];
+      if (audioSrc) {
+        const audio = document.getElementById("introAudio");
+        audio.src = audioSrc;
+        audio.volume = 0.4;
+
+        // Attempt autoplay (may need user interaction)
+        audio.play().catch(e => console.log("Autoplay blocked:", e));
+
+        // Show controls
+        document.getElementById("audioControls").style.display = "block";
+
+        const muteBtn = document.getElementById("muteBtn");
+        muteBtn.onclick = () => {
+          if (audio.paused || audio.muted) {
+            audio.muted = false;
+            audio.play();
+            muteBtn.textContent = "🔊 Playing Intro – Mute";
+          } else {
+            audio.muted = true;
+            muteBtn.textContent = "🔇 Muted – Play Intro";
+          }
+        };
+
+        // Stop on page unload
+        window.onbeforeunload = () => audio.pause();
+      }
+    }
   </script>
 
 </body>
