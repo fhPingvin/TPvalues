@@ -210,25 +210,36 @@
       box-shadow: 0 14px 36px rgba(255,133,51,0.5);
     }
 
-    /* Audio controls */
-    #audioControls {
-      margin: 1.5rem auto;
-      text-align: center;
-    }
-
-    #muteBtn {
-      padding: 0.8rem 1.6rem;
-      font-size: 1.1rem;
-      background: #444;
-      color: white;
-      border: 1px solid #666;
-      border-radius: 999px;
+    /* Music mute button - small square, top-center, fixed */
+    #musicMute {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      width: 48px;
+      height: 48px;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid #444;
+      border-radius: 12px;
       cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      color: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
       transition: all 0.2s;
     }
 
-    #muteBtn:hover {
-      background: #555;
+    #musicMute:hover {
+      background: rgba(50, 65, 90, 0.9);
+      transform: translateX(-50%) scale(1.05);
+    }
+
+    #musicMute.muted {
+      background: rgba(60, 20, 20, 0.8);
+      color: #ff5555;
     }
 
     /* Compact next matches */
@@ -315,6 +326,11 @@
 </head>
 <body>
 
+  <!-- Music mute button - small square, top-center, fixed -->
+  <button id="musicMute" title="Mute / Unmute Intro">
+    🔊
+  </button>
+
   <div class="brand-fixed">
     <img src="tplogo.png" alt="TP Values Logo">
     <span class="brand-text">TP Values</span>
@@ -338,13 +354,8 @@
       <img id="banner" src="" alt="Your Position on TP Values Chart">
     </div>
 
-    <!-- Audio controls -->
+    <!-- Hidden audio player -->
     <audio id="introAudio" preload="auto" loop="false"></audio>
-    <div id="audioControls" style="display: none; margin: 1.5rem auto; text-align: center;">
-      <button id="muteBtn">
-        🔊 Playing Intro – Mute
-      </button>
-    </div>
 
     <div class="results-grid" id="resultsGrid"></div>
 
@@ -462,7 +473,7 @@
       nextList.appendChild(item);
     }
 
-    // ==================== CANVAS DOT DRAWING (black dots) ====================
+    // ==================== CANVAS DOT DRAWING ====================
     window.onload = function() {
       const background = new Image();
       background.crossOrigin = "anonymous";
@@ -519,8 +530,7 @@
         ctx.strokeStyle = dotStroke;
         ctx.stroke();
 
-        const banner = document.getElementById("banner");
-        banner.src = c.toDataURL("image/png");
+        document.getElementById("banner").src = c.toDataURL("image/png");
       };
 
       background.src = "tpchart.png";
@@ -528,7 +538,7 @@
 
     // ==================== MUSIC INTRO FEATURE ====================
     if (closest) {
-      // Map ideology name → MP3 file (add your filenames here)
+      // Map ideology name → MP3 file (update with your exact filenames)
       const audioMap = {
         "Ailtirí na hAiséirghe": "/audio/ailtiri-na-haiseirghe.mp3",
         "All-Russian Fascist Party": "/audio/all-russian-fascist-party.mp3",
@@ -540,8 +550,70 @@
         "Breton National Party": "/audio/breton-national-party.mp3",
         "British Union of Fascists": "/audio/british-union-of-fascists.mp3",
         "Crusade of Romanianism": "/audio/crusade-of-romanianism.mp3",
-        // ... add all your other parties here
-        // Example: "Yellow Socialism": "/audio/yellow-socialism.mp3",
+        "Czech National Socialist Party": "/audio/czech-national-socialist-party.mp3",
+        "Distributism": "/audio/distributism.mp3",
+        "Ecofascism": "/audio/ecofascism.mp3",
+        "Ethnocacerism": "/audio/ethnocacerism.mp3",
+        "Euskadi Carlism": "/audio/euskadi-carlism.mp3",
+        "Falange Española": "/audio/falange-espanola.mp3",
+        "Fatherland Front": "/audio/fatherland-front.mp3",
+        "Fiumanism": "/audio/fiumanism.mp3",
+        "Francist Movement": "/audio/francist-movement.mp3",
+        "Action Française": "/audio/action-francaise.mp3",
+        "French Popular Party": "/audio/french-popular-party.mp3",
+        "French Renewal": "/audio/french-renewal.mp3",
+        "French Social Party": "/audio/french-social-party.mp3",
+        "Futurism": "/audio/futurism.mp3",
+        "Gajdism": "/audio/gajdism.mp3",
+        "Georgism": "/audio/georgism.mp3",
+        "Golden Square": "/audio/golden-square.mp3",
+        "Guild Socialism": "/audio/guild-socialism.mp3",
+        "Hlinka's Slovak People's Party": "/audio/hlinkas-slovak-peoples-party.mp3",
+        "Hungarism": "/audio/hungarism.mp3",
+        "Ilminism": "/audio/ilminism.mp3",
+        "Iron Guard": "/audio/iron-guard.mp3",
+        "JONSism": "/audio/jonsism.mp3",
+        "Kataeb Party": "/audio/kataeb-party.mp3",
+        "Kokkashugi": "/audio/kokkashugi.mp3",
+        "Kokutairon": "/audio/kokutairon.mp3",
+        "Chiangism": "/audio/chiangism.mp3",
+        "Lithuanian Nationalist Union": "/audio/lithuanian-nationalist-union.mp3",
+        "Lusitanian Integralism": "/audio/lusitanian-integralism.mp3",
+        "Lys Noir": "/audio/lys-noir.mp3",
+        "Metaxism": "/audio/metaxism.mp3",
+        "Nacionalismo": "/audio/nacionalismo.mp3",
+        "Nasjonal Samling": "/audio/nasjonal-samling.mp3",
+        "Nasserism": "/audio/nasserism.mp3",
+        "National Fascist Party": "/audio/national-fascist-party.mp3",
+        "National Radical Camp": "/audio/national-radical-camp.mp3",
+        "National Synarchist Union": "/audio/national-synarchist-union.mp3",
+        "National Syndicalist Movement": "/audio/national-syndicalist-movement.mp3",
+        "Neosocialism": "/audio/neosocialism.mp3",
+        "Nouvelle Droite": "/audio/nouvelle-droite.mp3",
+        "Party of National Socialists": "/audio/party-of-national-socialists.mp3",
+        "Patriot Front": "/audio/patriot-front.mp3",
+        "Patriotic People's Movement": "/audio/patriotic-peoples-movement.mp3",
+        "Peronism": "/audio/peronism.mp3",
+        "Petainism": "/audio/petainism.mp3",
+        "Phibunism": "/audio/phibunism.mp3",
+        "Poujadism": "/audio/poujadism.mp3",
+        "Rexist Party": "/audio/rexist-party.mp3",
+        "Salazarism": "/audio/salazarism.mp3",
+        "Sansepolcrismo": "/audio/sansepolcrismo.mp3",
+        "Spenglerianism": "/audio/spenglerianism.mp3",
+        "Squadrismo": "/audio/squadrismo.mp3",
+        "Strasserism": "/audio/strasserism.mp3",
+        "Superfascism": "/audio/superfascism.mp3",
+        "Syrian Social Nationalism": "/audio/syrian-social-nationalism.mp3",
+        "Tatenokai": "/audio/tatenokai.mp3",
+        "Third International Theory": "/audio/third-international-theory.mp3",
+        "Union of Bulgarian National Legions": "/audio/union-of-bulgarian-national-legions.mp3",
+        "Union of Dutch National Solidarists": "/audio/union-of-dutch-national-solidarists.mp3",
+        "Valoisism": "/audio/valoisism.mp3",
+        "VAPS Movement": "/audio/vaps-movement.mp3",
+        "Yellow Socialism": "/audio/yellow-socialism.mp3",
+        "Yugoslav People's Movement": "/audio/yugoslav-peoples-movement.mp3",
+        "Yugoslav Radical Union": "/audio/yugoslav-radical-union.mp3"
       };
 
       const audioSrc = audioMap[closest.name];
@@ -550,21 +622,23 @@
         audio.src = audioSrc;
         audio.volume = 0.4;
 
-        // Attempt autoplay (may need user interaction)
-        audio.play().catch(e => console.log("Autoplay blocked:", e));
+        // Attempt autoplay
+        audio.play().catch(() => {});
 
-        // Show controls
-        document.getElementById("audioControls").style.display = "block";
+        // Show mute button
+        const muteBtn = document.getElementById("musicMute");
+        muteBtn.style.display = "flex";
 
-        const muteBtn = document.getElementById("muteBtn");
+        // Toggle mute
         muteBtn.onclick = () => {
-          if (audio.paused || audio.muted) {
+          if (audio.muted) {
             audio.muted = false;
-            audio.play();
-            muteBtn.textContent = "🔊 Playing Intro – Mute";
+            muteBtn.innerHTML = "🔊";
+            muteBtn.title = "Mute Intro";
           } else {
             audio.muted = true;
-            muteBtn.textContent = "🔇 Muted – Play Intro";
+            muteBtn.innerHTML = "🔇";
+            muteBtn.title = "Unmute Intro";
           }
         };
 
