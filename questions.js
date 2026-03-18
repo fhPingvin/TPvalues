@@ -1,4 +1,5 @@
 const questions = [
+  // ==================== INTERFERENCE (State) - 25 questions ====================
   { text: "Workplaces should be run directly by the people who work in them.", axis: "interference", direction: 1 },
   { text: "Top national leadership should have final control over economic goals.", axis: "interference", direction: -1 },
   { text: "The economy should be managed through cooperation between the state, workers, and employers.", axis: "interference", direction: -1 },
@@ -25,6 +26,7 @@ const questions = [
   { text: "Worker groups need state supervision to function properly.", axis: "interference", direction: -1 },
   { text: "National goals should come before local interests.", axis: "interference", direction: -1 },
 
+  // ==================== OWNERSHIP - 25 questions ====================
   { text: "All material wealth should be held collectively.", axis: "ownership", direction: -1 },
   { text: "The right to property is fundamental.", axis: "ownership", direction: 1 },
   { text: "There is nothing wrong with permitting small businesses.", axis: "ownership", direction: 1 },
@@ -51,6 +53,7 @@ const questions = [
   { text: "Economic independence is difficult when all property belongs to the collective.", axis: "ownership", direction: 1 },
   { text: "Distributism is an achievable economic system.", axis: "ownership", direction: 1 },
 
+  // ==================== TRADITION - 25 questions ====================
   { text: "Empire-building and conquering can be virtuous.", axis: "tradition", direction: -1 },
   { text: "War imposes the stamp of nobility upon the people who have the courage to make it.", axis: "tradition", direction: -1 },
   { text: "Cultural adaptation to foreign ideas and values is necessary for societies to thrive in the modern world.", axis: "tradition", direction: -1 },
@@ -77,6 +80,7 @@ const questions = [
   { text: "There is now a worrying fusion of information and entertainment.", axis: "tradition", direction: 1 },
   { text: "The most important thing for children to learn is to accept discipline.", axis: "tradition", direction: 1 },
 
+  // ==================== FAITH - 25 questions ====================
   { text: "There is such a thing as inalienable rights.", axis: "faith", direction: 1 },
   { text: "All religions should be treated equally before the state.", axis: "faith", direction: -1 },
   { text: "Religious values should not influence governance.", axis: "faith", direction: -1 },
@@ -104,6 +108,7 @@ const questions = [
   { text: "Astrology accurately explains many things.", axis: "faith", direction: -1 }
 ];
 
+// Shuffle questions randomly every time the page loads
 function shuffle(array) {
   let currentIndex = array.length;
   while (currentIndex !== 0) {
