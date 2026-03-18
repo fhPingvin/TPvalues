@@ -23,7 +23,7 @@ const questions = [
   { text: "Economic life should be built around strong local communities.", axis: "interference", direction: 1 },
   { text: "Trades should be free to organize themselves without state control.", axis: "interference", direction: 1 },
   { text: "Worker groups need state supervision to function properly.", axis: "interference", direction: -1 },
-  { text: "National goals should come before local interests.", axis: "interference", direction: -1 }
+  { text: "National goals should come before local interests.", axis: "interference", direction: -1 },
 
   { text: "All material wealth should be held collectively.", axis: "ownership", direction: -1 },
   { text: "The right to property is fundamental.", axis: "ownership", direction: 1 },
