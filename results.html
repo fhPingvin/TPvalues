@@ -496,12 +496,12 @@
 
         const cx = 600;
         const cy = 600;
-        const half = 600;
+        const half = 510;
         const dotX = cx + (state / 50) * half;
         const dotY = cy - (owner / 50) * half;
 
         ctx.beginPath();
-        ctx.arc(dotX, dotY, 25, 0, 2 * Math.PI);
+        ctx.arc(dotX, dotY, 20, 0, 2 * Math.PI);
         ctx.fillStyle = dotColor;
         ctx.fill();
         ctx.lineWidth = dotStrokeWidth;
