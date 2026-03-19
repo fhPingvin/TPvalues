@@ -496,7 +496,7 @@
 
         const cx = 600;
         const cy = 600;
-        const half = 510;
+        const half = 600;
         const dotX = cx + (state / 50) * half;
         const dotY = cy - (owner / 50) * half;
 
@@ -536,9 +536,7 @@
       background.src = "tpchart.png";
     };
 
-    // ==================== MUSIC INTRO FEATURE ====================
     if (closest) {
-      // Map ideology name → MP3 file (update with your exact filenames)
     const audioMap = {
         "Ailtirí na hAiséirghe": "https://raw.githubusercontent.com/tpvalues/tpvalues/main/audio/ailtiri-na-haiseirghe.mp3",
         "All-Russian Fascist Party": "https://raw.githubusercontent.com/tpvalues/tpvalues/main/audio/all-russian-fascist-party.mp3",
@@ -623,14 +621,11 @@
         audio.src = audioSrc;
         audio.volume = 0.4;
 
-        // Attempt autoplay
         audio.play().catch(() => {});
 
-        // Show mute button
         const muteBtn = document.getElementById("musicMute");
         muteBtn.style.display = "flex";
 
-        // Toggle mute
         muteBtn.onclick = () => {
           if (audio.muted) {
             audio.muted = false;
@@ -643,7 +638,6 @@
           }
         };
 
-        // Stop on page unload
         window.onbeforeunload = () => audio.pause();
       }
     }
