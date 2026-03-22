@@ -51,7 +51,7 @@ const questions = [
   { text: "Workers should have stakes in the industries they work in.", axis: "ownership", direction: -1 },
   { text: "The businessperson and the manufacturer are more important than the writer and the artist.", axis: "ownership", direction: 1 },
   { text: "Economic independence is difficult when all property belongs to the collective.", axis: "ownership", direction: 1 },
-  { text: "Distributism is an achievable economic system.", axis: "ownership", direction: 1 },
+  { text: "Distributism can only work in theory.", axis: "ownership", direction: -1 },
 
   // ==================== TRADITION (25 questions) ====================
   { text: "Empire-building and conquering can be virtuous.", axis: "tradition", direction: -1 },
