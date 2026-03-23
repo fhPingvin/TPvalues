@@ -4,13 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TP Values — Your Results</title>
-
   <link rel="icon" type="image/png" href="tplogo.png" />
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
-
   <style>
     :root {
       --bg: #0f121a;
@@ -24,9 +21,7 @@
       --logo-bg-normal: #f8f9fc;
       --logo-bg-dark: #2d2d2d;
     }
-
     * { margin:0; padding:0; box-sizing:border-box; }
-
     body {
       font-family: 'Lexend', system-ui, sans-serif;
       background: var(--bg);
@@ -34,7 +29,6 @@
       min-height: 100vh;
       padding: 5rem 1rem 3rem;
     }
-
     .brand-fixed {
       position: fixed;
       top: 20px; left: 20px;
@@ -48,13 +42,11 @@
       box-shadow: 0 4px 16px rgba(0,0,0,0.5);
       backdrop-filter: blur(6px);
     }
-
     .brand-fixed img {
       width: 56px; height: 56px;
       border-radius: 10px;
       object-fit: cover;
     }
-
     .brand-text {
       color: white;
       font-size: 1.5rem;
@@ -63,26 +55,22 @@
       text-shadow: 0 1px 4px rgba(0,0,0,0.6);
       white-space: nowrap;
     }
-
     .container {
       max-width: 860px;
       margin: 0 auto;
       text-align: center;
     }
-
     h1 {
       font-size: 3.2rem;
       font-weight: 700;
       margin-bottom: 0.8rem;
       color: white;
     }
-
     .subtitle {
       font-size: 1.4rem;
       color: #94a3b8;
       margin-bottom: 2rem;
     }
-
     .match-section {
       margin: 1rem auto 3rem;
       max-width: 680px;
@@ -92,14 +80,12 @@
       padding: 2.5rem;
       box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
-
     .match-title {
       font-size: 2.2rem;
       font-weight: 700;
       margin-bottom: 1.2rem;
       color: #fff;
     }
-
     .party-logo-container {
       width: 160px;
       height: 160px;
@@ -109,37 +95,31 @@
       overflow: hidden;
       display: block;
     }
-
     .party-logo {
       width: 100%;
       height: 100%;
       object-fit: contain;
       display: block;
     }
-
-    .normal-bg   { background: var(--logo-bg-normal); }
-    .dark-bg     { background: var(--logo-bg-dark); }
-
+    .normal-bg { background: var(--logo-bg-normal); }
+    .dark-bg { background: var(--logo-bg-dark); }
     .party-name {
       font-size: 2.1rem;
       font-weight: 700;
       color: var(--accent);
       margin: 0.8rem 0 0.4rem;
     }
-
     .match-percent {
       font-size: 1.4rem;
       font-weight: 500;
       color: #94a3b8;
       margin-bottom: 1.5rem;
     }
-
     .party-desc {
       font-size: 1.15rem;
       line-height: 1.65;
       color: #cbd5e1;
     }
-
     .chart-container {
       margin: 0 auto 4rem;
       max-width: 680px;
@@ -149,21 +129,18 @@
       box-shadow: 0 8px 28px rgba(0,0,0,0.4);
       border: 1px solid #e2e8f0;
     }
-
     #banner {
       width: 100%;
       height: auto;
       border-radius: 12px;
       display: block;
     }
-
     .results-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.8rem;
       margin: 3rem 0;
     }
-
     .axis-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -171,24 +148,20 @@
       padding: 1.6rem;
       box-shadow: 0 6px 20px rgba(0,0,0,0.35);
     }
-
     .axis-name {
       font-size: 1.45rem;
       font-weight: 600;
       color: var(--accent);
       margin-bottom: 0.8rem;
     }
-
     .axis-score {
       font-size: 2.4rem;
       font-weight: 700;
       margin: 0.6rem 0;
     }
-
     .positive { color: var(--positive); }
     .negative { color: var(--negative); }
-    .neutral  { color: var(--neutral); }
-
+    .neutral { color: var(--neutral); }
     .restart-btn {
       display: inline-block;
       margin-top: 3.5rem;
@@ -204,12 +177,10 @@
       transition: all 0.25s ease;
       box-shadow: 0 8px 24px rgba(255,133,51,0.3);
     }
-
     .restart-btn:hover {
       transform: translateY(-3px);
       box-shadow: 0 14px 36px rgba(255,133,51,0.5);
     }
-
     /* Music mute button - small square, top-center, fixed */
     #musicMute {
       position: fixed;
@@ -231,17 +202,14 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.5);
       transition: all 0.2s;
     }
-
     #musicMute:hover {
       background: rgba(50, 65, 90, 0.9);
       transform: translateX(-50%) scale(1.05);
     }
-
     #musicMute.muted {
       background: rgba(60, 20, 20, 0.8);
       color: #ff5555;
     }
-
     /* Compact next matches */
     .next-matches {
       margin: 4rem auto;
@@ -252,7 +220,6 @@
       padding: 1.5rem;
       box-shadow: 0 6px 20px rgba(0,0,0,0.3);
     }
-
     .next-title {
       font-size: 1.6rem;
       font-weight: 600;
@@ -260,13 +227,11 @@
       margin-bottom: 1rem;
       text-align: center;
     }
-
     .next-list {
       display: flex;
       flex-direction: column;
       gap: 0.8rem;
     }
-
     .next-item {
       background: rgba(30, 41, 59, 0.8);
       border: 1px solid #444;
@@ -278,12 +243,10 @@
       align-items: flex-start;
       gap: 1rem;
     }
-
     .next-item:hover {
       background: rgba(50, 65, 90, 0.8);
       border-color: var(--accent);
     }
-
     .next-logo {
       width: 48px;
       height: 48px;
@@ -292,22 +255,18 @@
       background: var(--logo-bg-normal);
       flex-shrink: 0;
     }
-
     .next-info {
       flex: 1;
     }
-
     .next-name {
       font-size: 1.2rem;
       font-weight: 600;
       color: #cbd5e1;
     }
-
     .next-percent {
       font-size: 1rem;
       color: #94a3b8;
     }
-
     .next-desc {
       font-size: 0.95rem;
       color: #94a3b8;
@@ -317,7 +276,6 @@
       overflow: hidden;
       transition: max-height 0.5s ease, margin-top 0.5s ease;
     }
-
     .next-item.expanded .next-desc {
       max-height: 2000px;
       margin-top: 0.8rem;
@@ -325,21 +283,17 @@
   </style>
 </head>
 <body>
-
   <!-- Music mute button - small square, top-center, fixed -->
   <button id="musicMute" title="Mute / Unmute Intro">
     🔊
   </button>
-
   <div class="brand-fixed">
     <img src="tplogo.png" alt="TP Values Logo">
     <span class="brand-text">TP Values</span>
   </div>
-
   <div class="container">
     <h1>Your Results</h1>
     <p class="subtitle">Third Position Ideology Profile</p>
-
     <div class="match-section">
       <div class="match-title">Your Closest Ideological Match</div>
       <div id="logoContainer" class="party-logo-container normal-bg">
@@ -349,32 +303,24 @@
       <div id="matchPercent" class="match-percent"></div>
       <p id="matchDesc" class="party-desc">Your results are being compared...</p>
     </div>
-
     <div class="chart-container">
       <img id="banner" src="" alt="Your Position on TP Values Chart">
     </div>
-
     <!-- Hidden audio player -->
     <audio id="introAudio" preload="auto" loop="false"></audio>
-
     <div class="results-grid" id="resultsGrid"></div>
-
     <div class="next-matches">
       <div class="next-title">Other Close Matches</div>
       <div id="nextList" class="next-list"></div>
     </div>
-
     <a href="index.html" class="restart-btn">Take the Test Again</a>
   </div>
-
   <script src="ideologies.js"></script>
-
   <script>
     // Load user scores
     const saved = localStorage.getItem("scores");
     if (!saved) window.location.href = "index.html";
     const userScores = JSON.parse(saved);
-
     // Show axis results
     const axisDisplay = {
       interference: "Less / More State Interference",
@@ -382,7 +328,6 @@
       tradition: "Tradition / Future",
       faith: "Faith / Secularism"
     };
-
     const grid = document.getElementById("resultsGrid");
     Object.entries(userScores).forEach(([key, value]) => {
       const card = document.createElement("div");
@@ -399,7 +344,6 @@
       card.append(name, scoreEl);
       grid.appendChild(card);
     });
-
     // Find all matches sorted by distance
     const matches = [];
     ideologies.forEach(ideology => {
@@ -411,13 +355,8 @@
       const sqrtDist = Math.sqrt(dist);
       matches.push({ ideology, dist: sqrtDist });
     });
-
     matches.sort((a, b) => a.dist - b.dist);
-
-    // FIXED maxDist for -50 to +50 range (100 max diff per axis × 4 axes)
-    const maxDist = Math.sqrt(4 * 100 * 100); // = 200
-    console.log("DEBUG: maxDist is now", maxDist); // remove this line later
-
+    const maxDist = Math.sqrt(4 * 100 * 100); // FIXED: now correct for -50..+50 range
     // Top match
     const closest = matches[0]?.ideology;
     if (closest) {
@@ -437,7 +376,6 @@
       document.getElementById("matchPercent").textContent = `${percent}% compatibility`;
       document.getElementById("matchDesc").textContent = closest.description;
     }
-
     // Next 3 matches (compact, auto-expanding)
     const nextList = document.getElementById("nextList");
     for (let i = 1; i <= 3 && i < matches.length; i++) {
@@ -465,7 +403,6 @@
       item.onclick = () => item.classList.toggle("expanded");
       nextList.appendChild(item);
     }
-
     // ==================== CANVAS DOT DRAWING ====================
     window.onload = function() {
       const background = new Image();
@@ -475,24 +412,19 @@
         c.width = background.width;
         c.height = background.height;
         const ctx = c.getContext("2d");
-
         ctx.drawImage(background, 0, 0);
-
         const state = userScores.interference || 0;
         const owner = userScores.ownership || 0;
-        const trad  = userScores.tradition || 0;
+        const trad = userScores.tradition || 0;
         const faith = userScores.faith || 0;
-
         const dotColor = "#000000";
         const dotStroke = "#ffffff";
         const dotStrokeWidth = 4;
-
         const cx = 600;
         const cy = 600;
         const half = 520;
         const dotX = cx + (state / 50) * half;
         const dotY = cy - (owner / 50) * half;
-
         ctx.beginPath();
         ctx.arc(dotX, dotY, 25, 0, 2 * Math.PI);
         ctx.fillStyle = dotColor;
@@ -500,10 +432,8 @@
         ctx.lineWidth = dotStrokeWidth;
         ctx.strokeStyle = dotStroke;
         ctx.stroke();
-
         const tradX = 1315;
         const tradYPos = 600 - (trad / 50) * half;
-
         ctx.beginPath();
         ctx.arc(tradX, tradYPos, 20, 0, 2 * Math.PI);
         ctx.fillStyle = dotColor;
@@ -511,10 +441,8 @@
         ctx.lineWidth = dotStrokeWidth;
         ctx.strokeStyle = dotStroke;
         ctx.stroke();
-
         const faithX = 1515;
         const faithYPos = 600 - (faith / 50) * half;
-
         ctx.beginPath();
         ctx.arc(faithX, faithYPos, 20, 0, 2 * Math.PI);
         ctx.fillStyle = dotColor;
@@ -522,14 +450,10 @@
         ctx.lineWidth = dotStrokeWidth;
         ctx.strokeStyle = dotStroke;
         ctx.stroke();
-
         document.getElementById("banner").src = c.toDataURL("image/png");
       };
-
       background.src = "tpchart.png";
     };
-
-    // ==================== MUSIC INTRO FEATURE ====================
     if (closest) {
       const audioMap = {
         "Ailtirí na hAiséirghe": "https://raw.githubusercontent.com/tpvalues/tpvalues/main/audio/ailtiri-na-haiseirghe.mp3",
@@ -608,21 +532,14 @@
         "Yugoslav People's Movement": "https://raw.githubusercontent.com/tpvalues/tpvalues/main/audio/yugoslav-peoples-movement.mp3",
         "Yugoslav Radical Union": "https://raw.githubusercontent.com/tpvalues/tpvalues/main/audio/yugoslav-radical-union.mp3"
       };
-
       const audioSrc = audioMap[closest.name];
       if (audioSrc) {
         const audio = document.getElementById("introAudio");
         audio.src = audioSrc;
         audio.volume = 0.4;
-
-        // Attempt autoplay
         audio.play().catch(() => {});
-
-        // Show mute button
         const muteBtn = document.getElementById("musicMute");
         muteBtn.style.display = "flex";
-
-        // Toggle mute
         muteBtn.onclick = () => {
           if (audio.muted) {
             audio.muted = false;
@@ -634,12 +551,9 @@
             muteBtn.title = "Unmute Intro";
           }
         };
-
-        // Stop on page unload
         window.onbeforeunload = () => audio.pause();
       }
     }
   </script>
-
 </body>
 </html>
