@@ -181,7 +181,7 @@
       transform: translateY(-3px);
       box-shadow: 0 14px 36px rgba(255,133,51,0.5);
     }
-    /* Music mute button - small square, top-center, fixed */
+    /* Music mute button */
     #musicMute {
       position: fixed;
       top: 20px;
@@ -267,33 +267,21 @@
       font-size: 1rem;
       color: #94a3b8;
     }
-    .next-desc {
-      font-size: 0.95rem;
-      color: #94a3b8;
-      line-height: 1.5;
-      margin-top: 0.8rem;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s ease, margin-top 0.5s ease;
-    }
-    .next-item.expanded .next-desc {
-      max-height: 2000px;
-      margin-top: 0.8rem;
-    }
   </style>
 </head>
 <body>
-  <!-- Music mute button - small square, top-center, fixed -->
-  <button id="musicMute" title="Mute / Unmute Intro">
-    🔊
-  </button>
+
+  <button id="musicMute" title="Mute / Unmute Intro">🔊</button>
+
   <div class="brand-fixed">
     <img src="tplogo.png" alt="TP Values Logo">
     <span class="brand-text">TP Values</span>
   </div>
+
   <div class="container">
     <h1>Your Results</h1>
     <p class="subtitle">Third Position Ideology Profile</p>
+
     <div class="match-section">
       <div class="match-title">Your Closest Ideological Match</div>
       <div id="logoContainer" class="party-logo-container normal-bg">
@@ -303,31 +291,36 @@
       <div id="matchPercent" class="match-percent"></div>
       <p id="matchDesc" class="party-desc">Your results are being compared...</p>
     </div>
+
     <div class="chart-container">
       <img id="banner" src="" alt="Your Position on TP Values Chart">
     </div>
-    <!-- Hidden audio player -->
+
     <audio id="introAudio" preload="auto" loop="false"></audio>
+
     <div class="results-grid" id="resultsGrid"></div>
+
     <div class="next-matches">
       <div class="next-title">Other Close Matches</div>
       <div id="nextList" class="next-list"></div>
     </div>
+
     <a href="index.html" class="restart-btn">Take the Test Again</a>
   </div>
+
   <script src="ideologies.js"></script>
   <script>
-    // Load user scores
     const saved = localStorage.getItem("scores");
     if (!saved) window.location.href = "index.html";
     const userScores = JSON.parse(saved);
-    // Show axis results
+
     const axisDisplay = {
       interference: "Less / More State Interference",
       ownership: "Collective / Private Ownership",
       tradition: "Tradition / Future",
       faith: "Faith / Secularism"
     };
+
     const grid = document.getElementById("resultsGrid");
     Object.entries(userScores).forEach(([key, value]) => {
       const card = document.createElement("div");
@@ -344,7 +337,7 @@
       card.append(name, scoreEl);
       grid.appendChild(card);
     });
-    // Find all matches sorted by distance
+
     const matches = [];
     ideologies.forEach(ideology => {
       let dist = 0;
@@ -355,14 +348,21 @@
       const sqrtDist = Math.sqrt(dist);
       matches.push({ ideology, dist: sqrtDist });
     });
+
     matches.sort((a, b) => a.dist - b.dist);
+
     const maxDist = 135;
-    // Top match
-    const closest = matches[0]?.ideology;
-    if (closest) {
+
+    // Function to update main match and play song
+    function updateMainMatch(index) {
+      const selected = matches[index];
+      const closest = selected.ideology;
+
+      // Update main match display
       const logoEl = document.getElementById("matchLogo");
       const container = document.getElementById("logoContainer");
       logoEl.src = closest.img || "https://via.placeholder.com/160/333/ccc?text=No+Logo";
+
       const special = ["Iron Guard", "National Synarchist Union", "National Radical Camp", "Sansepolcrismo"];
       if (special.includes(closest.name)) {
         container.classList.remove("normal-bg");
@@ -371,90 +371,13 @@
         container.classList.remove("dark-bg");
         container.classList.add("normal-bg");
       }
+
       document.getElementById("matchName").textContent = closest.name;
-      const percent = Math.round(100 - (matches[0].dist / maxDist) * 100);
+      const percent = Math.round(100 - (selected.dist / maxDist) * 100);
       document.getElementById("matchPercent").textContent = `${percent}% compatibility`;
       document.getElementById("matchDesc").textContent = closest.description;
-    }
-    // Next 3 matches (compact, auto-expanding)
-    const nextList = document.getElementById("nextList");
-    for (let i = 1; i <= 3 && i < matches.length; i++) {
-      const { ideology, dist } = matches[i];
-      const percent = Math.round(100 - (dist / maxDist) * 100);
-      const item = document.createElement("div");
-      item.className = "next-item";
-      const logo = document.createElement("img");
-      logo.className = "next-logo";
-      logo.src = ideology.img || "https://via.placeholder.com/48/444/aaa?text=?";
-      logo.alt = ideology.name;
-      const info = document.createElement("div");
-      info.className = "next-info";
-      const name = document.createElement("div");
-      name.className = "next-name";
-      name.textContent = ideology.name;
-      const pct = document.createElement("div");
-      pct.className = "next-percent";
-      pct.textContent = `${percent}% compatibility`;
-      const desc = document.createElement("div");
-      desc.className = "next-desc";
-      desc.textContent = ideology.description;
-      info.append(name, pct, desc);
-      item.append(logo, info);
-      item.onclick = () => item.classList.toggle("expanded");
-      nextList.appendChild(item);
-    }
-    // ==================== CANVAS DOT DRAWING ====================
-    window.onload = function() {
-      const background = new Image();
-      background.crossOrigin = "anonymous";
-      background.onload = function() {
-        const c = document.createElement("canvas");
-        c.width = background.width;
-        c.height = background.height;
-        const ctx = c.getContext("2d");
-        ctx.drawImage(background, 0, 0);
-        const state = userScores.interference || 0;
-        const owner = userScores.ownership || 0;
-        const trad = userScores.tradition || 0;
-        const faith = userScores.faith || 0;
-        const dotColor = "#000000";
-        const dotStroke = "#ffffff";
-        const dotStrokeWidth = 2;
-        const cx = 600;
-        const cy = 600;
-        const half = 510;
-        const dotX = cx + (state / 50) * half;
-        const dotY = cy - (owner / 50) * half;
-        ctx.beginPath();
-        ctx.arc(dotX, dotY, 10, 0, 2 * Math.PI);
-        ctx.fillStyle = dotColor;
-        ctx.fill();
-        ctx.lineWidth = dotStrokeWidth;
-        ctx.strokeStyle = dotStroke;
-        ctx.stroke();
-        const tradX = 1317;
-        const tradYPos = 600 - (trad / 50) * half;
-        ctx.beginPath();
-        ctx.arc(tradX, tradYPos, 10, 0, 2 * Math.PI);
-        ctx.fillStyle = dotColor;
-        ctx.fill();
-        ctx.lineWidth = dotStrokeWidth;
-        ctx.strokeStyle = dotStroke;
-        ctx.stroke();
-        const faithX = 1517;
-        const faithYPos = 600 - (faith / 50) * half;
-        ctx.beginPath();
-        ctx.arc(faithX, faithYPos, 10, 0, 2 * Math.PI);
-        ctx.fillStyle = dotColor;
-        ctx.fill();
-        ctx.lineWidth = dotStrokeWidth;
-        ctx.strokeStyle = dotStroke;
-        ctx.stroke();
-        document.getElementById("banner").src = c.toDataURL("image/png");
-      };
-      background.src = "tpchart.png";
-    };
-    if (closest) {
+
+      // Play song
       const audioMap = {
         "Ailtirí na hAiséirghe": "https://raw.githubusercontent.com/tpvalues/tpvalues/main/audio/ailtiri-na-haiseirghe.mp3",
         "All-Russian Fascist Party": "https://raw.githubusercontent.com/tpvalues/tpvalues/main/audio/all-russian-fascist-party.mp3",
@@ -532,28 +455,125 @@
         "Yugoslav People's Movement": "https://raw.githubusercontent.com/tpvalues/tpvalues/main/audio/yugoslav-peoples-movement.mp3",
         "Yugoslav Radical Union": "https://raw.githubusercontent.com/tpvalues/tpvalues/main/audio/yugoslav-radical-union.mp3"
       };
+
       const audioSrc = audioMap[closest.name];
       if (audioSrc) {
         const audio = document.getElementById("introAudio");
         audio.src = audioSrc;
         audio.volume = 0.4;
         audio.play().catch(() => {});
-        const muteBtn = document.getElementById("musicMute");
-        muteBtn.style.display = "flex";
-        muteBtn.onclick = () => {
-          if (audio.muted) {
-            audio.muted = false;
-            muteBtn.innerHTML = "🔊";
-            muteBtn.title = "Mute Intro";
-          } else {
-            audio.muted = true;
-            muteBtn.innerHTML = "🔇";
-            muteBtn.title = "Unmute Intro";
-          }
-        };
-        window.onbeforeunload = () => audio.pause();
       }
+
+      // Scroll smoothly to top
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
+
+    // Initial top match
+    updateMainMatch(0);
+
+    // Next 3 matches - clickable to become main
+    const nextList = document.getElementById("nextList");
+    for (let i = 1; i <= 3 && i < matches.length; i++) {
+      const { ideology, dist } = matches[i];
+      const percent = Math.round(100 - (dist / maxDist) * 100);
+
+      const item = document.createElement("div");
+      item.className = "next-item";
+
+      const logo = document.createElement("img");
+      logo.className = "next-logo";
+      logo.src = ideology.img || "https://via.placeholder.com/48/444/aaa?text=?";
+      logo.alt = ideology.name;
+
+      const info = document.createElement("div");
+      info.className = "next-info";
+      const name = document.createElement("div");
+      name.className = "next-name";
+      name.textContent = ideology.name;
+      const pct = document.createElement("div");
+      pct.className = "next-percent";
+      pct.textContent = `${percent}% compatibility`;
+
+      info.append(name, pct);
+      item.append(logo, info);
+
+      // Click to switch main match
+      item.onclick = () => updateMainMatch(i);
+
+      nextList.appendChild(item);
+    }
+
+    // Canvas dot drawing (unchanged)
+    window.onload = function() {
+      const background = new Image();
+      background.crossOrigin = "anonymous";
+      background.onload = function() {
+        const c = document.createElement("canvas");
+        c.width = background.width;
+        c.height = background.height;
+        const ctx = c.getContext("2d");
+        ctx.drawImage(background, 0, 0);
+
+        const state = userScores.interference || 0;
+        const owner = userScores.ownership || 0;
+        const trad = userScores.tradition || 0;
+        const faith = userScores.faith || 0;
+
+        const dotColor = "#000000";
+        const dotStroke = "#ffffff";
+        const dotStrokeWidth = 2;
+        const cx = 600;
+        const cy = 600;
+        const half = 510;
+
+        const dotX = cx + (state / 50) * half;
+        const dotY = cy - (owner / 50) * half;
+
+        ctx.beginPath();
+        ctx.arc(dotX, dotY, 10, 0, 2 * Math.PI);
+        ctx.fillStyle = dotColor;
+        ctx.fill();
+        ctx.lineWidth = dotStrokeWidth;
+        ctx.strokeStyle = dotStroke;
+        ctx.stroke();
+
+        const tradX = 1317;
+        const tradYPos = 600 - (trad / 50) * half;
+        ctx.beginPath();
+        ctx.arc(tradX, tradYPos, 10, 0, 2 * Math.PI);
+        ctx.fillStyle = dotColor;
+        ctx.fill();
+        ctx.lineWidth = dotStrokeWidth;
+        ctx.strokeStyle = dotStroke;
+        ctx.stroke();
+
+        const faithX = 1517;
+        const faithYPos = 600 - (faith / 50) * half;
+        ctx.beginPath();
+        ctx.arc(faithX, faithYPos, 10, 0, 2 * Math.PI);
+        ctx.fillStyle = dotColor;
+        ctx.fill();
+        ctx.lineWidth = dotStrokeWidth;
+        ctx.strokeStyle = dotStroke;
+        ctx.stroke();
+
+        document.getElementById("banner").src = c.toDataURL("image/png");
+      };
+      background.src = "tpchart.png";
+    };
+
+    // Music mute button
+    const muteBtn = document.getElementById("musicMute");
+    const audio = document.getElementById("introAudio");
+    muteBtn.onclick = () => {
+      if (audio.muted) {
+        audio.muted = false;
+        muteBtn.innerHTML = "🔊";
+      } else {
+        audio.muted = true;
+        muteBtn.innerHTML = "🔇";
+      }
+    };
   </script>
 </body>
 </html>
