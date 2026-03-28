@@ -341,21 +341,50 @@
       grid.appendChild(card);
     });
 
-   let currentMatches = [];
+let currentMatches = [];
+
+    const THRESHOLD = 8;   // change to 5-10 if needed (higher = stricter quadrant lock)
+
+    const userInter = userScores.interference || 0;
+    const userOwn   = userScores.ownership || 0;
+
+    // Are we clearly in one economic quadrant?
+    const isInQuadrant = Math.abs(userInter) > THRESHOLD && Math.abs(userOwn) > THRESHOLD;
+
     ideologies.forEach(ideology => {
       let dist = 0;
+
       Object.keys(userScores).forEach(axis => {
-        let weight = 1.0;                    // full weight for economic axes
-        if (axis === 'tradition' || axis === 'faith') weight = 0.5;   // half weight for last 2 axes
+        let weight = 1.0;
+        if (axis === 'tradition' || axis === 'faith') weight = 0.5;   // keep your half weight
+
         const diff = userScores[axis] - (ideology.scores[axis] || 0);
         dist += weight * (diff * diff);
       });
+
       const sqrtDist = Math.sqrt(dist);
-      currentMatches.push({ ideology, dist: sqrtDist });
+
+      // If user is deep in a quadrant, only show ideologies from the SAME quadrant
+      if (!isInQuadrant) {
+        // near center → show global ranking
+        currentMatches.push({ ideology, dist: sqrtDist });
+      } else {
+        const ideoInter = ideology.scores.interference || 0;
+        const ideoOwn   = ideology.scores.ownership || 0;
+
+        const sameQuadrant =
+          (userInter > 0) === (ideoInter > 0) &&
+          (userOwn   > 0) === (ideoOwn   > 0);
+
+        if (sameQuadrant) {
+          currentMatches.push({ ideology, dist: sqrtDist });
+        }
+      }
     });
+
     currentMatches.sort((a, b) => a.dist - b.dist);
 
-    const maxDist = 110;
+    const maxDist = 110;   // keep this because of the 0.5 weighting
     
     // Function to update main match and play song
     function updateMainMatch(index) {
